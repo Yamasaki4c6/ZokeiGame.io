@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ページが見つかりません | 東京造形大学ゲーム研究会</title>
+  <meta name="description" content="お探しのページは見つかりませんでした。">
+  <meta name="theme-color" content="#120e2b">
+  <link rel="icon" href="/ZokeiGame.io/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ZokeiGame.io/css/style.css">
+</head>
+<body>
+  <header class="site-header is-scrolled" id="top">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/ZokeiGame.io/index.html">
+        <img src="/ZokeiGame.io/assets/img/favicon.svg" alt="" width="28" height="28">
+        <span>造形大ゲーム研究会</span>
+      </a>
+      <nav aria-label="メインメニュー"><a class="back-link" style="margin:0" href="/ZokeiGame.io/index.html">← トップへ</a></nav>
+    </div>
+  </header>
+
+  <main class="page coming-soon" id="main">
+    <div class="container">
+      <h1>404 - ページが見つかりません</h1>
+      <p>お探しのページは移動または削除された可能性があります。</p>
+      <a class="btn btn--primary" href="/ZokeiGame.io/">トップページへ</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">東京造形大学ゲーム研究会</p>
+      <ul class="site-footer__links">
+        <li><a data-link="xUrl" href="#" target="_blank" rel="noopener">公式X</a></li>
+        <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">入部希望フォーム</a></li>
+        <li><a href="/ZokeiGame.io/terms.html">規約</a></li>
+      </ul>
+      <p class="site-footer__copy">&copy; 東京造形大学ゲーム研究会</p>
+    </div>
+  </footer>
+  <script src="/ZokeiGame.io/js/site-config.js"></script>
+  <script>
+    document.querySelectorAll("[data-link]").forEach(function (a) {
+      var v = (window.SITE_CONFIG || {})[a.getAttribute("data-link")];
+      if (v) a.href = v;
+    });
+  </script>
+</body>
+</html>

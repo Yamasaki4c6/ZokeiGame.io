@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>東京造形大学ゲーム研究会 | 公式サイト</title>
+  <meta name="description" content="東京造形大学ゲーム研究会の公式サイトです。サークルで制作したゲーム作品の紹介、活動内容、入部案内を掲載しています。">
+  <meta name="theme-color" content="#120e2b">
+
+  <!-- OGP(SNSでシェアされたときの表示)
+       TODO: 公開URLが決まったら og:url と og:image を絶対URLに書き換えてください -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="東京造形大学ゲーム研究会">
+  <meta property="og:title" content="東京造形大学ゲーム研究会 | 公式サイト">
+  <meta property="og:description" content="東京造形大学ゲーム研究会の公式サイト。制作したゲーム作品と活動を紹介しています。">
+  <meta property="og:url" content="https://yamasaki4c6.github.io/ZokeiGame.io/">
+  <meta property="og:image" content="https://yamasaki4c6.github.io/ZokeiGame.io/assets/img/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+
+  <!-- ===== ヘッダー ===== -->
+  <header class="site-header" id="top">
+    <div class="site-header__inner">
+      <a class="site-logo" href="#top">
+        <img src="assets/img/favicon.svg" alt="" width="28" height="28">
+        <span>造形大ゲーム研究会</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="メインメニュー">
+        <ul>
+          <li><a href="#about">私たちについて</a></li>
+          <li><a href="#games">作品</a></li>
+          <li><a href="#activity">活動</a></li>
+          <li><a href="#join">入部案内</a></li>
+          <li><a href="terms.html">規約</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===== ヒーロー(背景ムービー) ===== -->
+    <section class="hero" aria-label="トップ">
+      <video class="hero__video" id="hero-video" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Tokyo Zokei University Game Research Club</p>
+        <h1 class="hero__title">東京造形大学<br class="sp-only">ゲーム研究会</h1>
+        <p class="hero__lead">つくって、遊んで、また つくる。</p>
+        <a class="hero__cta" href="#games">作品を見る</a>
+      </div>
+      <button class="hero__toggle" id="hero-toggle" type="button" aria-label="背景ムービーを一時停止" hidden>
+        <span class="icon-pause" aria-hidden="true"></span>
+      </button>
+      <a class="hero__scroll" href="#about" aria-label="下へスクロール"><span></span></a>
+    </section>
+
+    <!-- ===== 私たちについて ===== -->
+    <section class="section about" id="about">
+      <div class="container">
+        <h2 class="section__title"><span>About</span>私たちについて</h2>
+        <!-- TODO: サークルの紹介文に書き換えてください -->
+        <p class="about__text">
+          東京造形大学ゲーム研究会は、ゲームを「遊ぶ」だけでなく「つくる」ことを楽しむサークルです。
+          企画・プログラム・グラフィック・サウンドなど、学科を越えたメンバーがチームを組み、
+          オリジナルゲームを制作・発表しています。
+        </p>
+        <ul class="stats">
+          <!-- TODO: 実際の数字に書き換えてください -->
+          <li><strong>20<small>名</small></strong><span>部員数</span></li>
+          <li><strong id="stat-games">0<small>本</small></strong><span>公開作品</span></li>
+          <li><strong>週1<small>回</small></strong><span>定例活動</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 作品一覧(js/games.js から自動生成) ===== -->
+    <section class="section games" id="games">
+      <div class="container">
+        <h2 class="section__title"><span>Games</span>作品紹介</h2>
+        <p class="section__lead">
+          <span class="hover-only">カードにカーソルを合わせると詳しい解説が表示されます。</span>
+          <span class="touch-only">カードをタップすると詳しい解説が表示されます。</span>
+        </p>
+        <div class="filters" id="game-filters" role="group" aria-label="ジャンルで絞り込み"></div>
+        <ul class="game-grid" id="game-grid"></ul>
+        <noscript><p class="notice">作品一覧の表示には JavaScript を有効にしてください。</p></noscript>
+      </div>
+    </section>
+
+    <!-- ===== 活動内容 ===== -->
+    <section class="section activity" id="activity">
+      <div class="container">
+        <h2 class="section__title"><span>Activity</span>活動内容</h2>
+        <!-- TODO: 実際の活動に合わせて書き換えてください -->
+        <ol class="activity-list">
+          <li>
+            <h3>定例会</h3>
+            <p>毎週〇曜日の放課後に集まり、制作の進捗共有や勉強会を行います。</p>
+          </li>
+          <li>
+            <h3>チーム制作</h3>
+            <p>数人のチームでオリジナルゲームを企画から完成まで作り上げます。初心者も歓迎です。</p>
+          </li>
+          <li>
+            <h3>展示・発表</h3>
+            <p>学園祭や学外のゲームイベントで作品を展示し、遊んだ人の感想を次の制作に活かします。</p>
+          </li>
+          <li>
+            <h3>ゲーム会</h3>
+            <p>市販・インディーゲームを遊んで語り合う日も。研究会らしく、面白さの理由を考えます。</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== 入部案内 ===== -->
+    <section class="section join" id="join">
+      <div class="container join__inner">
+        <h2 class="section__title"><span>Join us</span>入部案内</h2>
+        <p>学年・学科・経験は問いません。プログラムが書けなくても、絵や音、企画が好きな人も大歓迎です。<br>
+          まずは見学からでもお気軽にどうぞ。</p>
+        <a class="btn btn--primary" data-link="joinFormUrl" href="#" target="_blank" rel="noopener">入部希望フォームを開く</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== フッター ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <p class="site-footer__name">東京造形大学ゲーム研究会</p>
+        <p class="site-footer__note">Tokyo Zokei University Game Research Club</p>
+      </div>
+      <ul class="site-footer__links">
+        <li>
+          <a data-link="xUrl" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.4L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg>
+            公式X
+          </a>
+        </li>
+        <li>
+          <a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H4V2h2Zm8 1.5V8h4.5L14 3.5ZM7 11v2h10v-2H7Zm0 4v2h7v-2H7Z"/></svg>
+            入部希望フォーム
+          </a>
+        </li>
+        <li>
+          <a href="terms.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></svg>
+            規約
+          </a>
+        </li>
+        <li class="contact-item" hidden>
+          <a data-link="contactEmail" href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm2 2v.5l8 5 8-5V6H4Zm16 2.8-8 5-8-5V18h16V8.8Z"/></svg>
+            お問い合わせ
+          </a>
+        </li>
+      </ul>
+      <p class="site-footer__copy">&copy; <span id="year"></span> 東京造形大学ゲーム研究会</p>
+    </div>
+  </footer>
+
+  <a class="back-to-top" href="#top" aria-label="ページの先頭へ戻る">↑</a>
+
+  <!-- スマホ・キーボード操作用の詳細ダイアログ -->
+  <dialog class="game-dialog" id="game-dialog" aria-labelledby="dialog-title">
+    <div class="game-dialog__body">
+      <button class="game-dialog__close" type="button" aria-label="閉じる">×</button>
+      <img class="game-dialog__img" alt="">
+      <div class="game-dialog__text">
+        <p class="game-dialog__meta"></p>
+        <h3 class="game-dialog__title" id="dialog-title"></h3>
+        <p class="game-dialog__desc"></p>
+        <ul class="tags game-dialog__tags"></ul>
+        <p class="game-dialog__credits"></p>
+        <a class="btn btn--primary game-dialog__link" href="#">公式ページへ</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/site-config.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

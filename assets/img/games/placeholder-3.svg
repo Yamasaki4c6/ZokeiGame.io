@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#5c2a1a"/></linearGradient></defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <g fill="#fff" fill-opacity=".9" font-family="sans-serif" text-anchor="middle">
+    <text x="320" y="170" font-size="40" font-weight="700">GAME 3</text>
+    <text x="320" y="215" font-size="20" fill-opacity=".75">サムネイル画像(仮)</text>
+  </g>
+</svg>
