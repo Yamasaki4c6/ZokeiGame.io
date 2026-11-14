@@ -110,7 +110,6 @@
 
   /* ---------- 作品カード ---------- */
   var grid = document.getElementById("game-grid");
-  var filters = document.getElementById("game-filters");
   var stat = document.getElementById("stat-games");
   if (stat) stat.innerHTML = games.length + "<small>本</small>";
 
@@ -150,6 +149,21 @@
     img.loading = "lazy";
     img.width = 640; img.height = 360;
     fig.appendChild(img);
+    if (g.video) {
+      // PC でカーソルを合わせたときにだけ動画を読み込んで再生
+      var v = el("video", "game-card__video");
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none";
+      v.setAttribute("aria-hidden", "true");
+      fig.appendChild(v);
+      li.addEventListener("mouseenter", function () {
+        if (!canHover.matches || reduceMotion.matches) return;
+        if (!v.src) v.src = g.video;
+        v.play().then(function () { v.classList.add("is-playing"); }).catch(function () {});
+      });
+      li.addEventListener("mouseleave", function () {
+        v.pause(); v.classList.remove("is-playing");
+      });
+    }
     a.appendChild(fig);
 
     var body = el("div", "game-card__body");
@@ -162,15 +176,16 @@
     pop.id = "desc-" + g.id;
     pop.appendChild(el("h3", "game-card__title", g.title));
     pop.appendChild(el("p", "game-card__meta", meta(g)));
-    pop.appendChild(el("p", "game-card__desc", g.description));
+    if (g.description) pop.appendChild(el("p", "game-card__desc", g.description));
     if (g.tags && g.tags.length) pop.appendChild(tagList(g.tags));
     if (g.credits) pop.appendChild(el("p", "game-card__credits", g.credits));
-    pop.appendChild(el("span", "game-card__more", "公式サイト"));
+    pop.appendChild(el("span", "game-card__more", g.youtube ? "動画を見る" : "公式サイト"));
     a.appendChild(pop);
 
     // タッチ端末ではタップで詳細ダイアログを開く
+    // YouTube 動画がある作品はクリックでサイト内再生
     a.addEventListener("click", function (e) {
-      if (canHover.matches) return;
+      if (canHover.matches && !g.youtube) return;
       e.preventDefault();
       openDialog(g);
     });
@@ -181,32 +196,49 @@
 
   games.forEach(function (g) { grid.appendChild(renderCard(g)); });
 
-  // ジャンル絞り込み(ジャンルが2種類以上あるときだけ表示)
-  var genres = [];
-  games.forEach(function (g) { if (g.genre && genres.indexOf(g.genre) < 0) genres.push(g.genre); });
-  if (genres.length > 1) {
-    ["ALL"].concat(genres).forEach(function (name, i) {
-      var b = el("button", "filter", name);
-      b.type = "button";
-      b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
-      b.addEventListener("click", function () {
-        filters.querySelectorAll(".filter").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
-        b.setAttribute("aria-pressed", "true");
-        grid.querySelectorAll(".game-card").forEach(function (card) {
-          card.hidden = i !== 0 && card.dataset.genre !== name;
-        });
-      });
-      filters.appendChild(b);
-    });
-  } else {
-    filters.hidden = true;
-  }
+  /* ---------- イベント ---------- */
+  var eventGrid = document.getElementById("event-grid");
+  (window.EVENTS || []).forEach(function (ev) {
+    var li = el("li", "event-card");
+    var a = el("a", "event-card__link");
+    a.href = ev.url;
+    var fig = el("div", "event-card__thumb");
+    var img = el("img");
+    img.src = ev.thumbnail; img.alt = ""; img.loading = "lazy"; img.width = 640; img.height = 360;
+    fig.appendChild(img);
+    a.appendChild(fig);
+    var body = el("div", "event-card__body");
+    body.appendChild(el("p", "event-card__label", ev.label));
+    body.appendChild(el("h3", "event-card__title", ev.title));
+    a.appendChild(body);
+    li.appendChild(a);
+    eventGrid.appendChild(li);
+  });
 
   /* ---------- 詳細ダイアログ ---------- */
   var dialog = document.getElementById("game-dialog");
+  var player = dialog.querySelector(".game-dialog__player");
+
+  function youtubeId(url) {
+    var m = String(url || "").match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
+    return m ? m[1] : "";
+  }
+
   function openDialog(g) {
     var img = dialog.querySelector(".game-dialog__img");
     img.src = g.thumbnail;
+    var yt = youtubeId(g.youtube);
+    img.hidden = !!yt;
+    player.hidden = !yt;
+    player.innerHTML = "";
+    if (yt) {
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + yt + "?autoplay=1&rel=0&playsinline=1";
+      f.title = g.title + " の動画";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      player.appendChild(f);
+    }
     dialog.querySelector(".game-dialog__meta").textContent = meta(g);
     dialog.querySelector(".game-dialog__title").textContent = g.title;
     dialog.querySelector(".game-dialog__desc").textContent = g.description;
@@ -221,11 +253,12 @@
     else window.location.href = gameUrl(g);
   }
   dialog.querySelector(".game-dialog__close").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("close", function () { player.innerHTML = ""; }); // 閉じたら再生を止める
   dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
 
   /* ---------- スクロールでふわっと表示 ---------- */
   if ("IntersectionObserver" in window && !reduceMotion.matches) {
-    var targets = document.querySelectorAll(".section__title, .game-card");
+    var targets = document.querySelectorAll(".section__title, .game-card, .event-card");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;

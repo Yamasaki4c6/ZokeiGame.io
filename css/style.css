@@ -123,7 +123,7 @@ h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 700; }
 .hero {
   position: relative; height: 100vh; height: 100svh; min-height: 520px;
   display: grid; place-items: center; text-align: center; overflow: hidden;
-  background: #111 url("../assets/img/hero-poster.svg") center / cover no-repeat;
+  background: #111 url("../assets/img/hero-poster.jpg") center / cover no-repeat;
   color: #fff;
 }
 .hero__video {
@@ -172,14 +172,6 @@ h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 700; }
 .notice { color: var(--text-muted); }
 
 /* ---------- 作品カード ---------- */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-.filter {
-  font: inherit; font-size: .82rem; font-weight: 500; color: var(--text);
-  background: #fff; border: 1px solid var(--line);
-  padding: 6px 18px; cursor: pointer; transition: border-color .2s, background .2s, color .2s;
-}
-.filter:hover { border-color: var(--text); }
-.filter[aria-pressed="true"] { background: var(--text); color: #fff; border-color: var(--text); }
 
 .game-grid {
   list-style: none; margin: 0; padding: 0;
@@ -192,6 +184,14 @@ h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 700; }
 .game-card__body { padding-top: 16px; }
 .game-card__title { font-size: 1rem; font-weight: 700; }
 .game-card__meta { margin: 4px 0 0; font-size: .78rem; color: var(--text-muted); }
+
+.game-card__meta:empty, .game-dialog__meta:empty, .game-dialog__desc:empty, .game-dialog__credits:empty { display: none; }
+.game-card__thumb { position: relative; }
+.game-card__video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .4s;
+}
+.game-card__video.is-playing { opacity: 1; }
 
 /* ホバーで出るポップアップ(PC のみ) */
 .game-card__popup { display: none; }
@@ -223,6 +223,34 @@ h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 700; }
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0 0 16px; }
 .tags li { font-size: .72rem; padding: 2px 10px; border: 1px solid var(--line); color: var(--text-muted); }
 
+/* ---------- イベント ---------- */
+.events { padding-top: 0; }
+.events .container { border-top: 1px solid var(--line); padding-top: clamp(80px, 11vw, 140px); }
+.event-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+}
+@media (max-width: 860px) { .event-grid { grid-template-columns: 1fr; gap: 40px; } }
+.event-card__link { display: block; text-decoration: none; }
+.event-card__thumb { aspect-ratio: 16 / 9; overflow: hidden; background: #151515; }
+.event-card__thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.event-card__link:hover .event-card__thumb img { transform: scale(1.04); }
+.event-card__body { padding-top: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.event-card__label { order: 2; margin: 0; font-family: var(--font-en); font-weight: 600; font-size: .7rem; letter-spacing: .14em; color: var(--text-muted); }
+.event-card__title { font-size: 1rem; }
+
+/* イベント詳細ページ */
+.event-page__hero { aspect-ratio: 21 / 9; overflow: hidden; background: #151515; margin-bottom: 48px; }
+.event-page__hero img { width: 100%; height: 100%; object-fit: cover; }
+.event-page__label { margin: 0 0 8px; font-family: var(--font-en); font-weight: 600; font-size: .75rem; letter-spacing: .16em; color: var(--text-muted); }
+.event-page__lead { margin: 16px 0 0; font-size: .95rem; }
+.info-table { width: 100%; border-collapse: collapse; margin: 0 0 8px; font-size: .92rem; }
+.info-table th, .info-table td { text-align: left; padding: 16px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.info-table th { width: 7em; font-weight: 500; color: var(--text-muted); }
+.prose .event-nav, .event-nav { list-style: none; padding: 0; margin: 64px 0 0; display: flex; flex-wrap: wrap; gap: 8px 32px; border-top: 1px solid var(--line); padding-top: 24px; }
+.event-nav a { font-size: .85rem; font-weight: 500; text-decoration: none; }
+.event-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 4px; }
+
 /* ---------- 詳細ダイアログ(スマホ用) ---------- */
 .game-dialog {
   width: min(560px, 100% - 32px); max-height: calc(100% - 48px); padding: 0; border: 0;
@@ -233,13 +261,17 @@ h1, h2, h3 { line-height: 1.4; margin: 0; font-weight: 700; }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(16px); } }
 .game-dialog__body { position: relative; }
 .game-dialog__img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.game-dialog__player { aspect-ratio: 16 / 9; background: #000; }
+.game-dialog__player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.game-dialog:has(.game-dialog__player:not([hidden])) { width: min(960px, 100% - 32px); }
+.game-dialog__close { z-index: 2; }
 .game-dialog__text { padding: 24px 24px 28px; display: flex; flex-direction: column; }
 .game-dialog__meta { order: 1; margin: 2px 0 16px; font-size: .78rem; color: var(--text-muted); }
 .game-dialog__title { order: 0; font-size: 1.2rem; }
 .game-dialog__desc { order: 2; margin: 0 0 16px; font-size: .92rem; }
 .game-dialog__tags { order: 3; }
 .game-dialog__credits { order: 4; margin: 0 0 24px; font-size: .78rem; color: var(--text-muted); }
-.game-dialog__link { order: 5; }
+.game-dialog__link { order: 5; align-self: flex-start; }
 .game-dialog__close {
   position: absolute; top: 0; right: 0; width: 48px; height: 48px; border: 0;
   background: var(--text); color: #fff; font-size: 1.4rem; line-height: 1; cursor: pointer;

@@ -5,11 +5,12 @@
  *
  *  id          : 英数字の識別子(重複しないように)
  *  title       : ゲームタイトル
- *  genre       : ジャンル
- *  year        : 制作年
- *  platform    : 対応環境
+ *  genre       : ジャンル(任意)
+ *  year        : 制作年(任意)
+ *  platform    : 対応環境(任意)
  *  thumbnail   : サムネイル画像(16:9 推奨)
- *  summary     : カードに出る短い紹介文(40字くらい)
+ *  video       : カードにカーソルを合わせたときに流す動画(任意・音声なし)
+ *  youtube     : YouTube のURL(任意)。あるとカードをクリックしたときにサイト内で再生されます
  *  description : カーソルを合わせたとき/タップしたときに出る詳細な解説文
  *  tags        : タグ(任意)
  *  credits     : 制作メンバー(任意)
@@ -17,45 +18,57 @@
  */
 window.GAMES = [
   {
-    id: "sample-game-1",
-    title: "ゲームタイトル1(仮)",
-    genre: "アクション",
-    year: 2026,
-    platform: "Windows / Web",
-    thumbnail: "assets/img/games/placeholder-1.svg",
-    summary: "ここに短い紹介文が入ります。",
-    description:
-      "ここに詳細な解説文が入ります。ゲームのあらすじ、遊び方、見どころ、制作で工夫した点などを2〜4文程度で書くと読みやすくなります。",
-    tags: ["2D", "ドット絵"],
-    credits: "企画・プログラム:〇〇 / グラフィック:〇〇",
+    id: "hurunokoto",
+    title: "布瑠の言",
+    genre: "",
+    year: "",
+    platform: "",
+    thumbnail: "assets/img/games/hurunokoto.jpg",
+    video: "assets/video/hurunokoto.mp4",
+    youtube: "https://youtu.be/FS_LVaajyik",
+    description: "",
+    tags: [],
+    credits: "",
     url: ""
   },
   {
-    id: "sample-game-2",
-    title: "ゲームタイトル2(仮)",
-    genre: "パズル",
-    year: 2026,
-    platform: "Web",
-    thumbnail: "assets/img/games/placeholder-2.svg",
-    summary: "ここに短い紹介文が入ります。",
+    id: "full",
+    title: "Full",
+    genre: "",
+    year: "",
+    platform: "",
+    thumbnail: "assets/img/games/full.jpg",
+    video: "",
     description:
-      "ここに詳細な解説文が入ります。ブラウザですぐ遊べる作品なら、その旨もここに書いておくと親切です。",
-    tags: ["3D", "Unity"],
-    credits: "制作:〇〇",
+      "お掃除AI「イレイズ」となって、ご主人のPCのストレージが満杯にならないよう、出現し続けるファイルやフォルダを制限時間内に削除していくゲーム。迷惑広告を避けながら、消してはいけない重要なファイルを見極めよう。",
+    tags: [],
+    credits: "",
     url: ""
   },
   {
-    id: "sample-game-3",
-    title: "ゲームタイトル3(仮)",
-    genre: "アドベンチャー",
-    year: 2025,
-    platform: "Windows",
-    thumbnail: "assets/img/games/placeholder-3.svg",
-    summary: "ここに短い紹介文が入ります。",
-    description:
-      "ここに詳細な解説文が入ります。展示イベント(学園祭・ゲームマーケットなど)で公開した作品なら、その情報も添えましょう。",
-    tags: ["ノベル"],
-    credits: "シナリオ:〇〇 / イラスト:〇〇",
+    id: "junsou-mazoku-gakuen",
+    title: "純走魔族学園",
+    genre: "",
+    year: "",
+    platform: "",
+    thumbnail: "assets/img/games/junsou.svg",       // TODO: 画像ができたら差し替え
+    video: "",
+    description: "",
+    tags: [],
+    credits: "",
+    url: ""
+  },
+  {
+    id: "sara",
+    title: "sara",
+    genre: "",
+    year: "",
+    platform: "",
+    thumbnail: "assets/img/games/sara.svg",          // TODO: 画像ができたら差し替え
+    video: "",
+    description: "",
+    tags: [],
+    credits: "",
     url: ""
   }
 ];

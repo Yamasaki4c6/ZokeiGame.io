@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>勉強会 | 東京造形大学ゲーム研究会</title>
+  <meta name="description" content="ゲームエンジンやプログラミング、グラフィックなど、制作に必要な技術を学ぶ会です。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header is-scrolled" id="top">
+    <div class="site-header__inner">
+      <a class="site-logo" href="../index.html">
+        <img src="../assets/img/favicon.svg" alt="" width="28" height="28">
+        <span>東京造形大学ゲーム研究会</span>
+      </a>
+      <nav class="site-nav" aria-label="メインメニュー" style="position:static;opacity:1;visibility:visible;background:none"><ul style="flex-direction:row;padding:0"><li style="border:0"><a href="../index.html" style="padding:6px 0;font-size:.82rem">TOP</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="page" id="main">
+    <div class="container prose">
+      <div class="event-page__hero"><img src="../assets/img/events/study.svg" alt=""></div>
+      <p class="event-page__label">STUDY</p>
+      <h1>勉強会</h1>
+      <p class="event-page__lead">ゲームエンジンやプログラミング、グラフィックなど、制作に必要な技術を学ぶ会です。</p>
+
+      <!-- TODO: 開催情報を書き換えてください -->
+      <h2>開催情報</h2>
+      <table class="info-table">
+        <tr><th>日時</th><td>未定</td></tr>
+        <tr><th>場所</th><td>未定</td></tr>
+        <tr><th>対象</th><td>未定</td></tr>
+        <tr><th>参加方法</th><td>未定</td></tr>
+      </table>
+
+      <!-- TODO: 過去の開催レポートや写真があればここに追加 -->
+
+      <ul class="event-nav">
+        <li><a href="gamejam.html">ゲームジャム</a></li>
+        <li><a href="lt.html">LT会</a></li>
+        <li><a href="study.html" aria-current="page">勉強会</a></li>
+      </ul>
+      <a class="back-link" href="../index.html#events">← EVENTS</a>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">東京造形大学ゲーム研究会</p>
+      <ul class="site-footer__links">
+        <li><a data-link="xUrl" href="#" target="_blank" rel="noopener">公式X</a></li>
+        <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">入部希望フォーム</a></li>
+        <li><a data-link="termsUrl" href="#" target="_blank" rel="noopener">規約</a></li>
+      </ul>
+      <p class="site-footer__copy">&copy; Tokyo Zokei University Game Research Club</p>
+    </div>
+  </footer>
+  <script src="../js/site-config.js"></script>
+  <script>
+    document.querySelectorAll("[data-link]").forEach(function (a) {
+      var v = (window.SITE_CONFIG || {})[a.getAttribute("data-link")];
+      if (v) a.href = v;
+    });
+  </script>
+</body>
+</html>
