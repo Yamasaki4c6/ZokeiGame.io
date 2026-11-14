@@ -10,6 +10,7 @@
  *  platform    : 対応環境(任意)
  *  thumbnail   : サムネイル画像(16:9 推奨)
  *  video       : カードにカーソルを合わせたときに流す動画(任意・音声なし)
+ *  youtube     : YouTube のURL(任意)。あるとカードをクリックしたときにサイト内で再生されます
  *  description : カーソルを合わせたとき/タップしたときに出る詳細な解説文
  *  tags        : タグ(任意)
  *  credits     : 制作メンバー(任意)
@@ -22,8 +23,9 @@ window.GAMES = [
     genre: "",
     year: "",
     platform: "",
-    thumbnail: "assets/img/games/hurunokoto.svg",   // TODO: 動画の1コマなどの画像に差し替え
+    thumbnail: "assets/img/games/hurunokoto.jpg",
     video: "assets/video/hurunokoto.mp4",
+    youtube: "https://youtu.be/FS_LVaajyik",
     description: "",
     tags: [],
     credits: "",

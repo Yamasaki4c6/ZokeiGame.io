@@ -65,7 +65,6 @@
     <section class="section games" id="games">
       <div class="container">
         <h2 class="section__title">GAMES<span>作品紹介</span></h2>
-        <div class="filters" id="game-filters" role="group" aria-label="ジャンルで絞り込み"></div>
         <ul class="game-grid" id="game-grid"></ul>
         <noscript><p class="notice">作品一覧の表示には JavaScript を有効にしてください。</p></noscript>
       </div>
@@ -121,6 +120,7 @@
     <div class="game-dialog__body">
       <button class="game-dialog__close" type="button" aria-label="閉じる">×</button>
       <img class="game-dialog__img" alt="">
+      <div class="game-dialog__player" hidden></div>
       <div class="game-dialog__text">
         <p class="game-dialog__meta"></p>
         <h3 class="game-dialog__title" id="dialog-title"></h3>

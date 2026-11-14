@@ -25,6 +25,6 @@ window.SITE_CONFIG = {
   heroVideo: {
     webm: "",                              // 例: "assets/video/hero.webm"(任意)
     mp4: "assets/video/hurunokoto.mp4",
-    poster: "assets/img/hero-poster.svg"   // 動画が読み込めない時・スマホの省データ時に出る静止画
+    poster: "assets/img/hero-poster.jpg"   // 動画が読み込めない時・スマホの省データ時に出る静止画
   }
 };

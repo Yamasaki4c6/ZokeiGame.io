@@ -110,7 +110,6 @@
 
   /* ---------- 作品カード ---------- */
   var grid = document.getElementById("game-grid");
-  var filters = document.getElementById("game-filters");
   var stat = document.getElementById("stat-games");
   if (stat) stat.innerHTML = games.length + "<small>本</small>";
 
@@ -180,12 +179,13 @@
     if (g.description) pop.appendChild(el("p", "game-card__desc", g.description));
     if (g.tags && g.tags.length) pop.appendChild(tagList(g.tags));
     if (g.credits) pop.appendChild(el("p", "game-card__credits", g.credits));
-    pop.appendChild(el("span", "game-card__more", "公式サイト"));
+    pop.appendChild(el("span", "game-card__more", g.youtube ? "動画を見る" : "公式サイト"));
     a.appendChild(pop);
 
     // タッチ端末ではタップで詳細ダイアログを開く
+    // YouTube 動画がある作品はクリックでサイト内再生
     a.addEventListener("click", function (e) {
-      if (canHover.matches) return;
+      if (canHover.matches && !g.youtube) return;
       e.preventDefault();
       openDialog(g);
     });
@@ -195,27 +195,6 @@
   }
 
   games.forEach(function (g) { grid.appendChild(renderCard(g)); });
-
-  // ジャンル絞り込み(ジャンルが2種類以上あるときだけ表示)
-  var genres = [];
-  games.forEach(function (g) { if (g.genre && genres.indexOf(g.genre) < 0) genres.push(g.genre); });
-  if (genres.length > 1) {
-    ["ALL"].concat(genres).forEach(function (name, i) {
-      var b = el("button", "filter", name);
-      b.type = "button";
-      b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
-      b.addEventListener("click", function () {
-        filters.querySelectorAll(".filter").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
-        b.setAttribute("aria-pressed", "true");
-        grid.querySelectorAll(".game-card").forEach(function (card) {
-          card.hidden = i !== 0 && card.dataset.genre !== name;
-        });
-      });
-      filters.appendChild(b);
-    });
-  } else {
-    filters.hidden = true;
-  }
 
   /* ---------- イベント ---------- */
   var eventGrid = document.getElementById("event-grid");
@@ -238,9 +217,28 @@
 
   /* ---------- 詳細ダイアログ ---------- */
   var dialog = document.getElementById("game-dialog");
+  var player = dialog.querySelector(".game-dialog__player");
+
+  function youtubeId(url) {
+    var m = String(url || "").match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
+    return m ? m[1] : "";
+  }
+
   function openDialog(g) {
     var img = dialog.querySelector(".game-dialog__img");
     img.src = g.thumbnail;
+    var yt = youtubeId(g.youtube);
+    img.hidden = !!yt;
+    player.hidden = !yt;
+    player.innerHTML = "";
+    if (yt) {
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + yt + "?autoplay=1&rel=0&playsinline=1";
+      f.title = g.title + " の動画";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      player.appendChild(f);
+    }
     dialog.querySelector(".game-dialog__meta").textContent = meta(g);
     dialog.querySelector(".game-dialog__title").textContent = g.title;
     dialog.querySelector(".game-dialog__desc").textContent = g.description;
@@ -255,6 +253,7 @@
     else window.location.href = gameUrl(g);
   }
   dialog.querySelector(".game-dialog__close").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("close", function () { player.innerHTML = ""; }); // 閉じたら再生を止める
   dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
 
   /* ---------- スクロールでふわっと表示 ---------- */
