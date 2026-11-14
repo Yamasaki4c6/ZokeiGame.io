@@ -150,6 +150,21 @@
     img.loading = "lazy";
     img.width = 640; img.height = 360;
     fig.appendChild(img);
+    if (g.video) {
+      // PC でカーソルを合わせたときにだけ動画を読み込んで再生
+      var v = el("video", "game-card__video");
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none";
+      v.setAttribute("aria-hidden", "true");
+      fig.appendChild(v);
+      li.addEventListener("mouseenter", function () {
+        if (!canHover.matches || reduceMotion.matches) return;
+        if (!v.src) v.src = g.video;
+        v.play().then(function () { v.classList.add("is-playing"); }).catch(function () {});
+      });
+      li.addEventListener("mouseleave", function () {
+        v.pause(); v.classList.remove("is-playing");
+      });
+    }
     a.appendChild(fig);
 
     var body = el("div", "game-card__body");
@@ -162,7 +177,7 @@
     pop.id = "desc-" + g.id;
     pop.appendChild(el("h3", "game-card__title", g.title));
     pop.appendChild(el("p", "game-card__meta", meta(g)));
-    pop.appendChild(el("p", "game-card__desc", g.description));
+    if (g.description) pop.appendChild(el("p", "game-card__desc", g.description));
     if (g.tags && g.tags.length) pop.appendChild(tagList(g.tags));
     if (g.credits) pop.appendChild(el("p", "game-card__credits", g.credits));
     pop.appendChild(el("span", "game-card__more", "公式サイト"));
@@ -202,6 +217,25 @@
     filters.hidden = true;
   }
 
+  /* ---------- イベント ---------- */
+  var eventGrid = document.getElementById("event-grid");
+  (window.EVENTS || []).forEach(function (ev) {
+    var li = el("li", "event-card");
+    var a = el("a", "event-card__link");
+    a.href = ev.url;
+    var fig = el("div", "event-card__thumb");
+    var img = el("img");
+    img.src = ev.thumbnail; img.alt = ""; img.loading = "lazy"; img.width = 640; img.height = 360;
+    fig.appendChild(img);
+    a.appendChild(fig);
+    var body = el("div", "event-card__body");
+    body.appendChild(el("p", "event-card__label", ev.label));
+    body.appendChild(el("h3", "event-card__title", ev.title));
+    a.appendChild(body);
+    li.appendChild(a);
+    eventGrid.appendChild(li);
+  });
+
   /* ---------- 詳細ダイアログ ---------- */
   var dialog = document.getElementById("game-dialog");
   function openDialog(g) {
@@ -225,7 +259,7 @@
 
   /* ---------- スクロールでふわっと表示 ---------- */
   if ("IntersectionObserver" in window && !reduceMotion.matches) {
-    var targets = document.querySelectorAll(".section__title, .game-card");
+    var targets = document.querySelectorAll(".section__title, .game-card, .event-card");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;

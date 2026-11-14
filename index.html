@@ -39,8 +39,9 @@
       <nav class="site-nav" id="site-nav" aria-label="メインメニュー">
         <ul>
           <li><a href="#games">GAMES</a></li>
+          <li><a href="#events">EVENTS</a></li>
           <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">JOIN</a></li>
-          <li><a href="terms.html">TERMS</a></li>
+          <li><a data-link="termsUrl" href="#" target="_blank" rel="noopener">TERMS</a></li>
         </ul>
       </nav>
     </div>
@@ -69,6 +70,14 @@
         <noscript><p class="notice">作品一覧の表示には JavaScript を有効にしてください。</p></noscript>
       </div>
     </section>
+
+    <!-- ===== イベント(js/events.js から自動生成) ===== -->
+    <section class="section events" id="events">
+      <div class="container">
+        <h2 class="section__title">EVENTS<span>イベント</span></h2>
+        <ul class="event-grid" id="event-grid"></ul>
+      </div>
+    </section>
   </main>
 
   <!-- ===== フッター ===== -->
@@ -89,7 +98,7 @@
           </a>
         </li>
         <li>
-          <a href="terms.html">
+          <a data-link="termsUrl" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></svg>
             規約
           </a>
@@ -125,6 +134,7 @@
 
   <script src="js/site-config.js"></script>
   <script src="js/games.js"></script>
+  <script src="js/events.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
