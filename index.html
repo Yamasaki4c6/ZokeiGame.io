@@ -26,6 +26,19 @@
 <body>
   <a class="skip-link" href="#main">本文へスキップ</a>
 
+  <!-- 開いた直後のオープニング(黒画面 → サークル名がフェードイン) -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <p class="intro__title">東京造形大学ゲーム研究会</p>
+  </div>
+  <script>
+    // 動きを減らす設定の人にはオープニングを出さない
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.getElementById("intro").remove();
+    } else {
+      document.documentElement.classList.add("is-intro");
+    }
+  </script>
+
   <!-- ===== ヘッダー ===== -->
   <header class="site-header" id="top">
     <div class="site-header__inner">
@@ -38,8 +51,10 @@
       </button>
       <nav class="site-nav" id="site-nav" aria-label="メインメニュー">
         <ul>
+          <li><a href="#news">NEWS</a></li>
           <li><a href="#games">GAMES</a></li>
           <li><a href="#events">EVENTS</a></li>
+          <li><a href="members.html">MEMBERS</a></li>
           <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">JOIN</a></li>
           <li><a data-link="termsUrl" href="#" target="_blank" rel="noopener">TERMS</a></li>
         </ul>
@@ -48,17 +63,27 @@
   </header>
 
   <main id="main">
-    <!-- ===== ヒーロー(背景ムービー) ===== -->
+    <!-- ===== ヒーロー(5秒ごとに切り替わる背景。中身は js/site-config.js の heroSlides) ===== -->
     <section class="hero" aria-label="トップ">
-      <video class="hero__video" id="hero-video" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-      <div class="hero__overlay"></div>
-      <div class="hero__content">
-        <h1 class="hero__title">東京造形大学<br class="sp-only">ゲーム研究会</h1>
+      <h1 class="visually-hidden">東京造形大学ゲーム研究会</h1>
+      <div class="hero__slides" id="hero-slides"></div>
+      <div class="hero__shade"></div>
+      <p class="hero__caption" id="hero-caption" aria-live="polite"></p>
+      <div class="hero__controls">
+        <ol class="hero__dots" id="hero-dots"></ol>
+        <button class="hero__toggle" id="hero-toggle" type="button" aria-label="スライドを一時停止">
+          <span class="icon-pause" aria-hidden="true"></span>
+        </button>
       </div>
-      <button class="hero__toggle" id="hero-toggle" type="button" aria-label="背景ムービーを一時停止" hidden>
-        <span class="icon-pause" aria-hidden="true"></span>
-      </button>
-      <a class="hero__scroll" href="#games" aria-label="下へスクロール"><span></span></a>
+      <a class="hero__scroll" href="#news" aria-label="下へスクロール"><span></span></a>
+    </section>
+
+    <!-- ===== News(js/news.js から自動生成・上から3件) ===== -->
+    <section class="news" id="news">
+      <div class="container news__inner">
+        <h2 class="news__title">NEWS</h2>
+        <ul class="news-list" id="news-list"></ul>
+      </div>
     </section>
 
     <!-- ===== 作品一覧(js/games.js から自動生成) ===== -->
@@ -126,6 +151,7 @@
         <h3 class="game-dialog__title" id="dialog-title"></h3>
         <p class="game-dialog__desc"></p>
         <ul class="tags game-dialog__tags"></ul>
+        <div class="game-dialog__gallery" hidden></div>
         <p class="game-dialog__credits"></p>
         <a class="btn btn--primary game-dialog__link" href="#">公式サイトへ</a>
       </div>
@@ -135,6 +161,7 @@
   <script src="js/site-config.js"></script>
   <script src="js/games.js"></script>
   <script src="js/events.js"></script>
+  <script src="js/news.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
