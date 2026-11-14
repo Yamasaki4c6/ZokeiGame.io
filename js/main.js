@@ -150,24 +150,22 @@
     img.loading = "lazy";
     img.width = 640; img.height = 360;
     fig.appendChild(img);
-    if (!g.url) fig.appendChild(el("span", "badge", "公式ページ準備中"));
     a.appendChild(fig);
 
     var body = el("div", "game-card__body");
-    body.appendChild(el("p", "game-card__meta", meta(g)));
     body.appendChild(el("h3", "game-card__title", g.title));
-    body.appendChild(el("p", "game-card__summary", g.summary));
+    body.appendChild(el("p", "game-card__meta", meta(g)));
     a.appendChild(body);
 
     // PC でホバーしたときに出るポップアップ
     var pop = el("div", "game-card__popup");
     pop.id = "desc-" + g.id;
-    pop.appendChild(el("p", "game-card__meta", meta(g)));
     pop.appendChild(el("h3", "game-card__title", g.title));
+    pop.appendChild(el("p", "game-card__meta", meta(g)));
     pop.appendChild(el("p", "game-card__desc", g.description));
     if (g.tags && g.tags.length) pop.appendChild(tagList(g.tags));
     if (g.credits) pop.appendChild(el("p", "game-card__credits", g.credits));
-    pop.appendChild(el("span", "game-card__more", g.url ? "公式ページへ →" : "公式ページ(準備中)→"));
+    pop.appendChild(el("span", "game-card__more", "公式サイト"));
     a.appendChild(pop);
 
     // タッチ端末ではタップで詳細ダイアログを開く
@@ -187,7 +185,7 @@
   var genres = [];
   games.forEach(function (g) { if (g.genre && genres.indexOf(g.genre) < 0) genres.push(g.genre); });
   if (genres.length > 1) {
-    ["すべて"].concat(genres).forEach(function (name, i) {
+    ["ALL"].concat(genres).forEach(function (name, i) {
       var b = el("button", "filter", name);
       b.type = "button";
       b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
@@ -218,7 +216,7 @@
     dialog.querySelector(".game-dialog__credits").textContent = g.credits || "";
     var link = dialog.querySelector(".game-dialog__link");
     link.href = gameUrl(g);
-    link.textContent = g.url ? "公式ページへ" : "公式ページ(準備中)";
+    link.textContent = "公式サイト";
     if (typeof dialog.showModal === "function") dialog.showModal();
     else window.location.href = gameUrl(g);
   }
@@ -227,7 +225,7 @@
 
   /* ---------- スクロールでふわっと表示 ---------- */
   if ("IntersectionObserver" in window && !reduceMotion.matches) {
-    var targets = document.querySelectorAll(".section__title, .about__text, .stats li, .game-card, .activity-list li, .join__inner > *");
+    var targets = document.querySelectorAll(".section__title, .game-card");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
