@@ -13,6 +13,8 @@ games/coming-soon.html  公式ページ未作成の作品用「準備中」ペ�
 css/style.css           デザイン(色は先頭の :root で一括変更)
 js/site-config.js       ★ X・Googleフォーム・背景動画などの設定
 js/games.js             ★ 作品カードのデータ
+js/news.js              ★ News(トップには上から3件)
+js/members.js           ★ 部員紹介(members.html)
 js/main.js              動作(基本的に編集不要)
 assets/video/           背景ムービーを置く場所
 assets/img/             画像(favicon・OGP・サムネイル)
@@ -27,10 +29,9 @@ assets/img/             画像(favicon・OGP・サムネイル)
 ### X・入部フォーム・規約(Notion)のURLを設定する
 `js/site-config.js` の `xUrl` / `joinFormUrl` / `termsUrl` を書き換えます。全ページのリンクに反映されます。
 
-### 背景ムービーを差し替える
-`assets/video/hurunokoto.mp4` に動画を置きます(音声なし・10〜30秒・5MB前後・1920×1080 か 1280×720 推奨)。
-動画が無い/読み込めないときや、端末が省データ設定のときは `hero-poster.jpg` の静止画が表示されます。
-「視差効果を減らす」設定の閲覧者には自動再生しません(右下のボタンで再生可)。
+### トップの背景を差し替える
+`js/site-config.js` の `heroSlides` に作品名・動画・画像を並べます。5秒ごとに切り替わり、左下に作品名が出ます(間隔は `heroInterval`)。
+動画は音声なし・10〜30秒・5MB前後の mp4 がおすすめです。省データ設定や「視差効果を減らす」設定の閲覧者には自動再生しません。
 
 ## ローカルで確認
 

@@ -53,61 +53,6 @@
     if (e.key === "Escape" && nav.classList.contains("is-open")) setNav(false);
   });
 
-  /* ---------- ヒーロー動画 ---------- */
-  var video = document.getElementById("hero-video");
-  var toggle = document.getElementById("hero-toggle");
-  var hv = config.heroVideo || {};
-  var saveData = navigator.connection && navigator.connection.saveData;
-
-  if (hv.poster) video.poster = hv.poster;
-
-  function setPaused(paused) {
-    toggle.classList.toggle("is-paused", paused);
-    toggle.setAttribute("aria-label", paused ? "背景ムービーを再生" : "背景ムービーを一時停止");
-  }
-
-  if ((hv.mp4 || hv.webm) && !saveData) {
-    if (hv.webm) addSource(hv.webm, "video/webm");
-    if (hv.mp4) addSource(hv.mp4, "video/mp4");
-    video.load();
-    video.addEventListener("canplay", function once() {
-      video.removeEventListener("canplay", once);
-      video.classList.add("is-ready");
-      toggle.hidden = false;
-      if (reduceMotion.matches) {
-        setPaused(true); // 動きを減らす設定の人には自動再生しない
-      } else {
-        var p = video.play();
-        if (p && p.catch) p.catch(function () { setPaused(true); });
-      }
-    });
-    // 動画ファイルが無い/読めない場合はポスター画像のまま
-    video.addEventListener("error", function () { video.classList.remove("is-ready"); }, true);
-
-    toggle.addEventListener("click", function () {
-      if (video.paused) { video.play(); setPaused(false); }
-      else { video.pause(); setPaused(true); }
-    });
-
-    // 画面外では止めて負荷を下げる
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (toggle.classList.contains("is-paused")) return;
-          if (en.isIntersecting) video.play().catch(function () {});
-          else video.pause();
-        });
-      }).observe(video);
-    }
-  }
-
-  function addSource(src, type) {
-    var s = document.createElement("source");
-    s.src = src;
-    s.type = type;
-    video.appendChild(s);
-  }
-
   /* ---------- 作品カード ---------- */
   var grid = document.getElementById("game-grid");
   var stat = document.getElementById("stat-games");
@@ -133,6 +78,138 @@
   function meta(g) {
     return [g.genre, g.year, g.platform].filter(Boolean).join(" / ");
   }
+
+  /* ---------- オープニング ---------- */
+  var intro = document.getElementById("intro");
+  if (intro) {
+    // 0.3秒後にサークル名がフェードイン(CSS)→ 2.6秒後に黒幕が消える
+    setTimeout(function () {
+      intro.classList.add("is-done");
+      document.documentElement.classList.remove("is-intro");
+      setTimeout(function () { intro.remove(); }, 1000);
+    }, 2600);
+  }
+
+  /* ---------- ヒーロー(5秒ごとに切り替え) ---------- */
+  var slidesEl = document.getElementById("hero-slides");
+  var dotsEl = document.getElementById("hero-dots");
+  var captionEl = document.getElementById("hero-caption");
+  var toggle = document.getElementById("hero-toggle");
+  var slidesData = config.heroSlides || [];
+  var interval = config.heroInterval || 5000;
+  var saveData = navigator.connection && navigator.connection.saveData;
+  var slides = [];
+  var current = -1;
+  var timer = null;
+  var paused = reduceMotion.matches; // 動きを減らす設定の人には自動再生しない
+
+  slidesData.forEach(function (d, i) {
+    var wrap = el("div", "hero__slide");
+    if (d.image) {
+      var img = el("img");
+      img.src = d.image; img.alt = "";
+      if (i > 0) img.loading = "lazy";
+      wrap.appendChild(img);
+    }
+    var v = null;
+    if (d.video && !saveData) {
+      v = el("video");
+      v.muted = true; v.playsInline = true; v.loop = true;
+      v.preload = i === 0 ? "auto" : "metadata";
+      v.src = d.video;
+      v.setAttribute("aria-hidden", "true");
+      v.addEventListener("playing", function () { v.classList.add("is-ready"); });
+      wrap.appendChild(v);
+    }
+    slidesEl.appendChild(wrap);
+
+    var li = el("li");
+    var b = el("button", "hero__dot");
+    b.type = "button";
+    b.setAttribute("aria-label", d.title + " を表示");
+    b.style.setProperty("--duration", interval + "ms");
+    b.addEventListener("click", function () { show(i); restart(); });
+    li.appendChild(b);
+    dotsEl.appendChild(li);
+    slides.push({ el: wrap, video: v, dot: b, title: d.title });
+  });
+  if (slides.length < 2) dotsEl.hidden = true;
+
+  function show(i) {
+    if (i === current || !slides[i]) return;
+    var prev = slides[current];
+    if (prev) {
+      prev.el.classList.remove("is-active");
+      prev.dot.classList.remove("is-active");
+      prev.dot.removeAttribute("aria-current");
+      if (prev.video) setTimeout(function () { prev.video.pause(); }, 1200);
+    }
+    current = i;
+    var s = slides[i];
+    s.el.classList.add("is-active");
+    // アニメーションをリセットしてからプログレスバーを再開
+    s.dot.classList.remove("is-active"); void s.dot.offsetWidth; s.dot.classList.add("is-active");
+    s.dot.setAttribute("aria-current", "true");
+    captionEl.classList.remove("is-in"); void captionEl.offsetWidth;
+    captionEl.textContent = s.title || "";
+    captionEl.classList.add("is-in");
+    if (s.video) {
+      try { s.video.currentTime = 0; } catch (e) {}
+      if (!paused) s.video.play().catch(function () {});
+    }
+  }
+  function next() { show((current + 1) % slides.length); }
+  function restart() {
+    clearInterval(timer);
+    if (!paused && slides.length > 1) timer = setInterval(next, interval);
+  }
+  function setPaused(p) {
+    paused = p;
+    document.querySelector(".hero").classList.toggle("is-paused", p);
+    toggle.classList.toggle("is-paused", p);
+    toggle.setAttribute("aria-label", p ? "スライドを再生" : "スライドを一時停止");
+    var s = slides[current];
+    if (s && s.video) { if (p) s.video.pause(); else s.video.play().catch(function () {}); }
+    restart();
+  }
+  toggle.addEventListener("click", function () { setPaused(!paused); });
+
+  if (slides.length) {
+    show(0);
+    setPaused(paused);
+  } else {
+    toggle.hidden = true;
+  }
+
+  // 画面外では止めて負荷を下げる
+  if ("IntersectionObserver" in window && slides.length) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (paused) return;
+        var s = slides[current];
+        if (en.isIntersecting) { if (s.video) s.video.play().catch(function () {}); restart(); }
+        else { if (s.video) s.video.pause(); clearInterval(timer); }
+      });
+    }).observe(slidesEl);
+  }
+
+  /* ---------- News ---------- */
+  var newsList = document.getElementById("news-list");
+  (window.NEWS || []).slice(0, 3).forEach(function (n) {
+    var li = el("li", "news-item");
+    var inner = el(n.url ? "a" : "div", "news-item__inner");
+    if (n.url) {
+      inner.href = n.url;
+      if (/^https?:/.test(n.url)) { inner.target = "_blank"; inner.rel = "noopener"; }
+    }
+    var time = el("time", "news-item__date", n.date);
+    time.dateTime = String(n.date).replace(/\./g, "-");
+    inner.appendChild(time);
+    if (n.category) inner.appendChild(el("span", "news-item__cat", n.category));
+    inner.appendChild(el("span", "news-item__title", n.title));
+    li.appendChild(inner);
+    newsList.appendChild(li);
+  });
 
   function renderCard(g) {
     var li = el("li", "game-card");
@@ -246,6 +323,13 @@
     tags.innerHTML = "";
     (g.tags || []).forEach(function (t) { tags.appendChild(el("li", null, t)); });
     dialog.querySelector(".game-dialog__credits").textContent = g.credits || "";
+    var gal = dialog.querySelector(".game-dialog__gallery");
+    gal.innerHTML = "";
+    (g.gallery || []).forEach(function (src) {
+      var gi = el("img"); gi.src = src; gi.alt = g.title + " の画像"; gi.loading = "lazy";
+      gal.appendChild(gi);
+    });
+    gal.hidden = !(g.gallery && g.gallery.length);
     var link = dialog.querySelector(".game-dialog__link");
     link.href = gameUrl(g);
     link.textContent = "公式サイト";
@@ -258,7 +342,7 @@
 
   /* ---------- スクロールでふわっと表示 ---------- */
   if ("IntersectionObserver" in window && !reduceMotion.matches) {
-    var targets = document.querySelectorAll(".section__title, .game-card, .event-card");
+    var targets = document.querySelectorAll(".section__title, .game-card, .event-card, .news-item");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
