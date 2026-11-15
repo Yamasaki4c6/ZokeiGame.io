@@ -13,7 +13,7 @@ window.EVENTS = [
     id: "gamejam",
     title: "ゲームジャム",
     label: "GAME JAM",
-    thumbnail: "assets/img/events/gamejam.svg",
+    thumbnail: "assets/img/events/gamejam-2026-poster.jpg",
     summary: "限られた時間でチームを組み、テーマに沿ったゲームを作り上げます。",
     url: "events/gamejam.html"
   },

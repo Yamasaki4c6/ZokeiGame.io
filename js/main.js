@@ -121,6 +121,26 @@
     }
   }
 
+  /* ---------- 特設バナー ---------- */
+  var banner = config.featureBanner;
+  var bannerSec = document.getElementById("feature-banner");
+  if (bannerSec) {
+    if (banner && banner.image) {
+      var bLink = document.getElementById("feature-banner-link");
+      var bImg = document.getElementById("feature-banner-img");
+      bImg.src = banner.image;
+      bImg.alt = banner.alt || "";
+      if (banner.url) {
+        bLink.href = banner.url;
+        if (/^https?:/.test(banner.url)) { bLink.target = "_blank"; bLink.rel = "noopener noreferrer"; }
+      } else {
+        bLink.removeAttribute("href");
+      }
+    } else {
+      bannerSec.hidden = true;
+    }
+  }
+
   /* ---------- NEWS(4件まで表示、5件以上は VIEW MORE) ---------- */
   var NEWS_VISIBLE = 4;
   var newsList = document.getElementById("news-list");
@@ -294,9 +314,9 @@
     document.body.classList.remove("modal-open");
   });
 
-  /* ---------- スクロールでふわっと表示 ---------- */
+  /* ---------- スクロール表示(見出しだけ控えめにフェード。動きは付けない) ---------- */
   if ("IntersectionObserver" in window && !reduceMotion.matches) {
-    var targets = document.querySelectorAll(".section__title, .about__body p, .news-item, .game-card, .event-card");
+    var targets = document.querySelectorAll(".section__title");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
@@ -312,7 +332,6 @@
     }, { rootMargin: "0px 0px -10% 0px" });
     targets.forEach(function (t, i) {
       t.classList.add("reveal");
-      t.style.transitionDelay = (i % 4) * 60 + "ms";
       io.observe(t);
     });
   }
