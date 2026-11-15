@@ -6,9 +6,6 @@
   <title>東京造形大学ゲーム研究会 | 公式サイト</title>
   <meta name="description" content="東京造形大学ゲーム研究会の公式サイトです。サークルで制作したゲーム作品の紹介、活動内容、入部案内を掲載しています。">
   <meta name="theme-color" content="#ffffff">
-
-  <!-- OGP(SNSでシェアされたときの表示)
-       TODO: 公開URLが決まったら og:url と og:image を絶対URLに書き換えてください -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="東京造形大学ゲーム研究会">
   <meta property="og:title" content="東京造形大学ゲーム研究会 | 公式サイト">
@@ -16,77 +13,92 @@
   <meta property="og:url" content="https://yamasaki4c6.github.io/ZokeiGame.io/">
   <meta property="og:image" content="https://yamasaki4c6.github.io/ZokeiGame.io/assets/img/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
-
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="is-home">
   <a class="skip-link" href="#main">本文へスキップ</a>
 
-  <!-- 開いた直後のオープニング(黒画面 → サークル名がフェードイン) -->
+
+  <!-- オープニング(同じセッションの初回アクセス時だけ表示) -->
   <div class="intro" id="intro" aria-hidden="true">
     <p class="intro__title">東京造形大学ゲーム研究会</p>
   </div>
   <script>
-    // 動きを減らす設定の人にはオープニングを出さない
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.getElementById("intro").remove();
-    } else {
-      document.documentElement.classList.add("is-intro");
-    }
+    (function () {
+      var intro = document.getElementById("intro");
+      var seen = false;
+      try { seen = sessionStorage.getItem("tzu-intro-seen") === "1"; } catch (e) {}
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // 2回目以降・下層ページからの戻り・アンカー付きURL・動きを減らす設定では即表示
+      if (seen || reduce || location.hash) {
+        intro.remove();
+      } else {
+        document.documentElement.classList.add("is-intro");
+        try { sessionStorage.setItem("tzu-intro-seen", "1"); } catch (e) {}
+      }
+    })();
   </script>
 
-  <!-- ===== ヘッダー ===== -->
+  <!-- ===== ヘッダー(全ページ共通) ===== -->
   <header class="site-header" id="top">
     <div class="site-header__inner">
-      <a class="site-logo" href="#top">
-        <img src="assets/img/favicon.svg" alt="" width="28" height="28">
-        <span>東京造形大学ゲーム研究会</span>
-      </a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="メニューを開く">
+      <a class="site-logo" href="#top">東京造形大学ゲーム研究会</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="メニューを開く">
         <span></span><span></span><span></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="メインメニュー">
-        <ul>
+        <ul class="site-nav__list">
+          <li><a href="#about">ABOUT</a></li>
           <li><a href="#news">NEWS</a></li>
           <li><a href="#games">GAMES</a></li>
           <li><a href="#events">EVENTS</a></li>
           <li><a href="members.html">MEMBERS</a></li>
-          <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">JOIN</a></li>
-          <li><a data-link="termsUrl" href="#" target="_blank" rel="noopener">TERMS</a></li>
+          <li><a href="rule.html">RULE</a></li>
         </ul>
+        <a class="nav-join" data-link="joinFormUrl" href="#" target="_blank" rel="noopener noreferrer">JOIN<span aria-hidden="true">↗</span></a>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <!-- ===== ヒーロー(5秒ごとに切り替わる背景。中身は js/site-config.js の heroSlides) ===== -->
+    <!-- ===== ヒーロー(5秒ごとに切り替え。中身は js/site-config.js の heroSlides) ===== -->
     <section class="hero" aria-label="トップ">
       <h1 class="visually-hidden">東京造形大学ゲーム研究会</h1>
       <div class="hero__slides" id="hero-slides"></div>
       <div class="hero__shade"></div>
       <p class="hero__caption" id="hero-caption" aria-live="polite"></p>
-      <div class="hero__controls">
-        <ol class="hero__dots" id="hero-dots"></ol>
-        <button class="hero__toggle" id="hero-toggle" type="button" aria-label="スライドを一時停止">
-          <span class="icon-pause" aria-hidden="true"></span>
-        </button>
-      </div>
-      <a class="hero__scroll" href="#news" aria-label="下へスクロール"><span></span></a>
+      <ol class="hero__dots" id="hero-dots" aria-label="スライドの切り替え"></ol>
     </section>
 
-    <!-- ===== News(js/news.js から自動生成・上から3件) ===== -->
+    <!-- ===== ABOUT ===== -->
+    <section class="section about" id="about">
+      <div class="container about__inner">
+        <h2 class="section__title">ABOUT<span>東京造形大学 ゲーム研究会について</span></h2>
+        <div class="about__body">
+          <!-- 紹介文はここを書き換えてください(段落ごとに <p> を増減できます) -->
+          <p>東京造形大学ゲーム研究会(TZU GAME KEN)は、ゲーム開発に情熱を持つ学生が集うインカレコミュニティサークルです。</p>
+          <p>企画・3DCG・2Dイラスト・アニメーション・プログラミング・サウンドなど、多様な専門領域を持つメンバーが交わり、個人制作からチームでの共同開発まで幅広く活動しています。</p>
+          <p>定期的なゲームジャム(短期集中制作)や技術勉強会、LT会(ライトニングトーク)を通じて、互いに刺激し合いながら『面白いものをつくる』環境を追求しています。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWS(js/news.js から自動生成。4件まで表示、5件以上は VIEW MORE) ===== -->
     <section class="news" id="news">
       <div class="container news__inner">
-        <h2 class="news__title">NEWS</h2>
-        <ul class="news-list" id="news-list"></ul>
+        <h2 class="section__title">NEWS<span>お知らせ</span></h2>
+        <div class="news__body">
+          <ul class="news-list" id="news-list"></ul>
+          <button class="news-more" id="news-more" type="button" aria-expanded="false" hidden>VIEW MORE</button>
+        </div>
       </div>
     </section>
 
-    <!-- ===== 作品一覧(js/games.js から自動生成) ===== -->
+    <!-- ===== GAMES(js/games.js から自動生成) ===== -->
     <section class="section games" id="games">
       <div class="container">
         <h2 class="section__title">GAMES<span>作品紹介</span></h2>
@@ -95,7 +107,7 @@
       </div>
     </section>
 
-    <!-- ===== イベント(js/events.js から自動生成) ===== -->
+    <!-- ===== EVENTS(js/events.js から自動生成) ===== -->
     <section class="section events" id="events">
       <div class="container">
         <h2 class="section__title">EVENTS<span>イベント</span></h2>
@@ -104,61 +116,46 @@
     </section>
   </main>
 
-  <!-- ===== フッター ===== -->
+  <!-- 作品の詳細ダイアログ -->
+  <dialog class="game-dialog" id="game-dialog" aria-labelledby="dialog-title">
+    <div class="game-dialog__head">
+      <h3 class="game-dialog__title" id="dialog-title"></h3>
+      <button class="game-dialog__close" type="button" aria-label="閉じる"></button>
+    </div>
+    <div class="game-dialog__scroll">
+      <div class="game-dialog__media">
+        <img class="game-dialog__img" alt="">
+        <div class="game-dialog__player" hidden></div>
+      </div>
+      <div class="game-dialog__text">
+        <p class="game-dialog__meta"></p>
+        <p class="game-dialog__desc"></p>
+        <ul class="tags game-dialog__tags"></ul>
+        <div class="game-dialog__gallery" hidden></div>
+        <p class="game-dialog__credits"></p>
+        <a class="btn btn--primary game-dialog__link" href="#">公式サイト</a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===== フッター(全ページ共通) ===== -->
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <p class="site-footer__name">東京造形大学ゲーム研究会</p>
       <ul class="site-footer__links">
-        <li>
-          <a data-link="xUrl" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.4L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg>
-            公式X
-          </a>
-        </li>
-        <li>
-          <a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H4V2h2Zm8 1.5V8h4.5L14 3.5ZM7 11v2h10v-2H7Zm0 4v2h7v-2H7Z"/></svg>
-            入部希望フォーム
-          </a>
-        </li>
-        <li>
-          <a data-link="termsUrl" href="#" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></svg>
-            規約
-          </a>
-        </li>
-        <li class="contact-item" hidden>
-          <a data-link="contactEmail" href="#">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm2 2v.5l8 5 8-5V6H4Zm16 2.8-8 5-8-5V18h16V8.8Z"/></svg>
-            お問い合わせ
-          </a>
-        </li>
+        <li><a data-link="xUrl" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.4L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg>公式X<span class="ext" aria-hidden="true">↗</span></a></li>
+        <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H4V2h2Zm8 1.5V8h4.5L14 3.5ZM7 11v2h10v-2H7Zm0 4v2h7v-2H7Z"/></svg>入部希望フォーム<span class="ext" aria-hidden="true">↗</span></a></li>
+        <li><a href="rule.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></svg>規約</a></li>
+        <li class="contact-item" hidden><a data-link="contactEmail" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm2 2v.5l8 5 8-5V6H4Zm16 2.8-8 5-8-5V18h16V8.8Z"/></svg>お問い合わせ</a></li>
       </ul>
-      <p class="site-footer__copy">&copy; <span id="year"></span> Tokyo Zokei University Game Research Club</p>
+      <p class="site-footer__copy">&copy; <span class="js-year">2026</span> Tokyo Zokei University Game Research Club</p>
     </div>
   </footer>
 
   <a class="back-to-top" href="#top" aria-label="ページの先頭へ戻る"></a>
 
-  <!-- スマホ・キーボード操作用の詳細ダイアログ -->
-  <dialog class="game-dialog" id="game-dialog" aria-labelledby="dialog-title">
-    <div class="game-dialog__body">
-      <button class="game-dialog__close" type="button" aria-label="閉じる">×</button>
-      <img class="game-dialog__img" alt="">
-      <div class="game-dialog__player" hidden></div>
-      <div class="game-dialog__text">
-        <p class="game-dialog__meta"></p>
-        <h3 class="game-dialog__title" id="dialog-title"></h3>
-        <p class="game-dialog__desc"></p>
-        <ul class="tags game-dialog__tags"></ul>
-        <div class="game-dialog__gallery" hidden></div>
-        <p class="game-dialog__credits"></p>
-        <a class="btn btn--primary game-dialog__link" href="#">公式サイトへ</a>
-      </div>
-    </div>
-  </dialog>
-
   <script src="js/site-config.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/games.js"></script>
   <script src="js/events.js"></script>
   <script src="js/news.js"></script>

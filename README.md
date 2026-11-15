@@ -5,7 +5,9 @@ GitHub Pages で公開する静的サイトです(ビルド不要。HTML / CSS /
 ## ファイル構成
 
 ```
-index.html              トップページ
+index.html              トップページ(ABOUT の紹介文はこのファイル内)
+rule.html               規約の要約ページ(全文は Notion へリンク)
+members.html            部員紹介
 events/                 ゲームジャム・LT会・勉強会のページ
 js/events.js            ★ イベントカードのデータ
 404.html                ページが見つからないとき
@@ -13,9 +15,10 @@ games/coming-soon.html  公式ページ未作成の作品用「準備中」ペ�
 css/style.css           デザイン(色は先頭の :root で一括変更)
 js/site-config.js       ★ X・Googleフォーム・背景動画などの設定
 js/games.js             ★ 作品カードのデータ
-js/news.js              ★ News(トップには上から3件)
+js/news.js              ★ News(4件まで表示、5件以上は VIEW MORE で展開)
 js/members.js           ★ 部員紹介(members.html)
-js/main.js              動作(基本的に編集不要)
+js/common.js            全ページ共通の動作(メニュー・外部リンク・Topボタン)
+js/main.js              トップページの動作(基本的に編集不要)
 assets/video/           背景ムービーを置く場所
 assets/img/             画像(favicon・OGP・サムネイル)
 ```
@@ -45,3 +48,6 @@ python3 -m http.server 8000
 リポジトリの Settings → Pages → Build and deployment で
 「Deploy from a branch」/ `main` / `/ (root)` を選んで保存します。
 公開URLは `https://yamasaki4c6.github.io/ZokeiGame.io/` になります。
+
+### ヘッダー・フッターについて
+全ページに同じヘッダー・フッターが書かれています。メニューやフッターのリンクを変えるときは、各HTMLファイルの同じ箇所をそろえて直してください。

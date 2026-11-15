@@ -12,14 +12,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ZokeiGame.io/css/style.css">
 </head>
-<body>
-  <header class="site-header is-scrolled" id="top">
+<body class="is-subpage">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+
+  <!-- ===== ヘッダー(全ページ共通) ===== -->
+  <header class="site-header is-solid" id="top">
     <div class="site-header__inner">
-      <a class="site-logo" href="/ZokeiGame.io/index.html">
-        <img src="/ZokeiGame.io/assets/img/favicon.svg" alt="" width="28" height="28">
-        <span>東京造形大学ゲーム研究会</span>
-      </a>
-      <nav class="site-nav" aria-label="メインメニュー" style="position:static;opacity:1;visibility:visible;background:none"><ul style="flex-direction:row;padding:0"><li style="border:0"><a href="/ZokeiGame.io/index.html" style="padding:6px 0;font-size:.82rem">TOP</a></li></ul></nav>
+      <a class="site-logo" href="/ZokeiGame.io/">東京造形大学ゲーム研究会</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="メインメニュー">
+        <ul class="site-nav__list">
+          <li><a href="/ZokeiGame.io/#about">ABOUT</a></li>
+          <li><a href="/ZokeiGame.io/#news">NEWS</a></li>
+          <li><a href="/ZokeiGame.io/#games">GAMES</a></li>
+          <li><a href="/ZokeiGame.io/#events">EVENTS</a></li>
+          <li><a href="/ZokeiGame.io/members.html">MEMBERS</a></li>
+          <li><a href="/ZokeiGame.io/rule.html">RULE</a></li>
+        </ul>
+        <a class="nav-join" data-link="joinFormUrl" href="#" target="_blank" rel="noopener noreferrer">JOIN<span aria-hidden="true">↗</span></a>
+      </nav>
     </div>
   </header>
 
@@ -31,23 +44,24 @@
     </div>
   </main>
 
+  <!-- ===== フッター(全ページ共通) ===== -->
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <p class="site-footer__name">東京造形大学ゲーム研究会</p>
       <ul class="site-footer__links">
-        <li><a data-link="xUrl" href="#" target="_blank" rel="noopener">公式X</a></li>
-        <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener">入部希望フォーム</a></li>
-        <li><a data-link="termsUrl" href="#" target="_blank" rel="noopener">規約</a></li>
+        <li><a data-link="xUrl" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.4L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg>公式X<span class="ext" aria-hidden="true">↗</span></a></li>
+        <li><a data-link="joinFormUrl" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H4V2h2Zm8 1.5V8h4.5L14 3.5ZM7 11v2h10v-2H7Zm0 4v2h7v-2H7Z"/></svg>入部希望フォーム<span class="ext" aria-hidden="true">↗</span></a></li>
+        <li><a href="/ZokeiGame.io/rule.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4Zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10l-6 6Z"/></svg>規約</a></li>
+        <li class="contact-item" hidden><a data-link="contactEmail" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm2 2v.5l8 5 8-5V6H4Zm16 2.8-8 5-8-5V18h16V8.8Z"/></svg>お問い合わせ</a></li>
       </ul>
-      <p class="site-footer__copy">&copy; Tokyo Zokei University Game Research Club</p>
+      <p class="site-footer__copy">&copy; <span class="js-year">2026</span> Tokyo Zokei University Game Research Club</p>
     </div>
   </footer>
+
+  <a class="back-to-top" href="#top" aria-label="ページの先頭へ戻る"></a>
+
   <script src="/ZokeiGame.io/js/site-config.js"></script>
-  <script>
-    document.querySelectorAll("[data-link]").forEach(function (a) {
-      var v = (window.SITE_CONFIG || {})[a.getAttribute("data-link")];
-      if (v) a.href = v;
-    });
-  </script>
+  <script src="/ZokeiGame.io/js/common.js"></script>
+
 </body>
 </html>
