@@ -244,9 +244,9 @@ body.nav-open .site-header .nav-join { background: var(--text); color: #fff; bor
 }
 
 /* =========================================================
-   特設バナー(3:1)
+   特設バナー(3:1。NEWS の一番上に小さく表示)
    ========================================================= */
-.feature-banner { padding: 0 0 clamp(24px, 4vw, 48px); }
+.feature-banner { width: min(100%, 540px); margin: 0 0 16px; }
 .feature-banner__link { display: block; overflow: hidden; border: 1px solid var(--thumb-line); background: var(--bg-sub); }
 .feature-banner__link img { width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; transition: transform .6s var(--ease); }
 a.feature-banner__link[href]:hover img { transform: scale(1.02); }
@@ -411,7 +411,9 @@ a.news-item__inner:hover { border-color: var(--text); transform: translateX(4px)
 /* 左の大きいカードは右2段の高さに合わせて伸びる */
 .event-card--main .event-card__thumb { flex: 1; aspect-ratio: auto; min-height: 240px; }
 /* 縦長ポスターはタイトル部分(上寄り)を見せる */
-.event-card--main .event-card__thumb img { object-position: center 18%; }
+.event-card--main .event-card__thumb { background: #0d1117; }
+/* 縦長ポスターを引き延ばさず全体を表示(仮置き) */
+.event-card--main .event-card__thumb img { object-fit: contain; }
 .event-card__thumb img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   transition: transform .6s var(--ease);
@@ -429,7 +431,7 @@ a.news-item__inner:hover { border-color: var(--text); transform: translateX(4px)
 @media (max-width: 768px) {
   .event-grid { grid-template-columns: 1fr; gap: 32px; }
   .event-card--main { grid-row: auto; }
-  .event-card--main .event-card__thumb { aspect-ratio: 16 / 9; flex: none; min-height: 0; }
+  .event-card--main .event-card__thumb { aspect-ratio: 4 / 3; flex: none; min-height: 0; }
   .event-card__body { flex-direction: column; align-items: flex-start; gap: 2px; }
 }
 
