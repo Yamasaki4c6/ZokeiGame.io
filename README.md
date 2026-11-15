@@ -49,5 +49,8 @@ python3 -m http.server 8000
 「Deploy from a branch」/ `main` / `/ (root)` を選んで保存します。
 公開URLは `https://yamasaki4c6.github.io/ZokeiGame.io/` になります。
 
+### 特設バナーを差し替える
+`js/site-config.js` の `featureBanner` に画像(1500×500 推奨)とリンク先を設定します。`image` を空にするとバナー欄ごと非表示になります。
+
 ### ヘッダー・フッターについて
 全ページに同じヘッダー・フッターが書かれています。メニューやフッターのリンクを変えるときは、各HTMLファイルの同じ箇所をそろえて直してください。
